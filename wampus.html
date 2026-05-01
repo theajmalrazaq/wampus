@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WUMPUS WORLD</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="app">
+      <header class="topbar">
+        <div class="brand">
+          <h1>Wumpus World</h1>
+          <p>Propositional Logic Agent · Resolution Refutation v2</p>
+        </div>
+        <div class="badge">Knowledge-Based AI</div>
+      </header>
+      <section class="toolbar">
+        <div class="controls">
+          <div class="field">
+            <label class="field-label">Grid Size</label>
+            <div class="row">
+              <input type="number" id="inp-r" value="4" min="3" max="8" />
+              <span class="sep-x">×</span>
+              <input type="number" id="inp-c" value="4" min="3" max="8" />
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">Step Delay</label>
+            <div class="speed-tabs">
+              <button class="speed-tab" onclick="setSpd(900,this)">Slow</button>
+              <button class="speed-tab on" onclick="setSpd(420,this)">
+                Med
+              </button>
+              <button class="speed-tab" onclick="setSpd(120,this)">Fast</button>
+            </div>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="btn btn-solid" onclick="boot()">New Game</button>
+          <button class="btn btn-outline" onclick="toggleRun()" id="run-btn">
+            ▶ Auto Run
+          </button>
+          <button class="btn btn-ghost" onclick="tick()">Step Once</button>
+          <button class="btn btn-ghost" onclick="openModal()">Legend</button>
+        </div>
+      </section>
+      <main class="content">
+        <section class="main-stage">
+          <div class="stage-head">
+            <h2>World Map</h2>
+          </div>
+          <div id="world"></div>
+          <div class="statusbar" id="sbar">Awaiting boot...</div>
+        </section>
+        <aside class="side-panel">
+          <div class="panel-head">
+            <h2>Control Panel</h2>
+          </div>
+          <div class="panel-tabs">
+            <button class="nav-tab on" onclick="switchPanel('metrics',this)">
+              Metrics
+            </button>
+            <button class="nav-tab" onclick="switchPanel('percepts',this)">
+              Percepts
+            </button>
+            <button class="nav-tab" onclick="switchPanel('kb',this)">KB</button>
+            <button class="nav-tab" onclick="switchPanel('logs',this)">
+              Logs
+            </button>
+          </div>
+          <div id="panel-metrics" class="panel show">
+            <div class="metrics-grid">
+              <div class="metric">
+                <span class="metric-k">Inference Steps</span>
+                <span class="metric-v" id="m0">0</span>
+              </div>
+              <div class="metric">
+                <span class="metric-k">Cells Visited</span>
+                <span class="metric-v" id="m1">0</span>
+              </div>
+              <div class="metric">
+                <span class="metric-k">Safe Proven</span>
+                <span class="metric-v" id="m2">0</span>
+              </div>
+              <div class="metric">
+                <span class="metric-k">KB Clauses</span>
+                <span class="metric-v" id="m3">0</span>
+              </div>
+            </div>
+          </div>
+          <div id="panel-percepts" class="panel">
+            <div class="percept-area" id="percepts">
+              <span class="tag tag-none">None</span>
+            </div>
+          </div>
+          <div id="panel-kb" class="panel">
+            <div class="scroll-box" id="kb-view">—</div>
+          </div>
+          <div id="panel-logs" class="panel">
+            <div class="scroll-box" id="ilog"></div>
+          </div>
+        </aside>
+      </main>
+    </div>
+
+    <div
+      class="modal"
+      id="legend-modal"
+      onclick="if(event.target===this)closeModal()"
+    >
+      <div class="modal-card">
+        <div class="modal-head">
+          <h3>Legend</h3>
+          <button class="icon-btn" onclick="closeModal()">✕</button>
+        </div>
+        <div class="modal-body">
+          <div class="legend-grid">
+            <div class="leg">
+              <div
+                class="leg-sq"
+                style="background: var(--p); border-color: var(--p2)"
+              >
+                <i class="bi bi-robot" style="font-size: 10px; color: white"></i>
+              </div>
+              Agent
+            </div>
+            <div class="leg">
+              <div
+                class="leg-sq"
+                style="
+                  background: rgba(52, 211, 153, 0.18);
+                  border-color: rgba(52, 211, 153, 0.55);
+                "
+              ></div>
+              Safe
+            </div>
+            <div class="leg">
+              <div
+                class="leg-sq"
+                style="background: #141827; border-color: #ffffff10"
+              ></div>
+              Unknown
+            </div>
+            <div class="leg">
+              <div
+                class="leg-sq"
+                style="background: #1e2a44; border-color: #ffffff1f"
+              ></div>
+              Visited
+            </div>
+            <div class="leg">
+              <div
+                class="leg-sq"
+                style="
+                  background: rgba(251, 113, 133, 0.2);
+                  border-color: rgba(251, 113, 133, 0.5);
+                "
+              >
+                <i
+                  class="bi bi-patch-minus-fill"
+                  style="font-size: 10px; color: var(--red)"
+                ></i>
+              </div>
+              Pit
+            </div>
+            <div class="leg">
+              <div
+                class="leg-sq"
+                style="
+                  background: rgba(251, 191, 36, 0.2);
+                  border-color: rgba(251, 191, 36, 0.48);
+                "
+              >
+                <i
+                  class="bi bi-bug-fill"
+                  style="font-size: 10px; color: var(--amber)"
+                ></i>
+              </div>
+              Wumpus
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
