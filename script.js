@@ -346,8 +346,7 @@ function setSpd(ms, btn) {
 
 function draw() {
   const wrap = $("world");
-  wrap.style.gridTemplateColumns = "repeat(" + S.cols + ",var(--cell-w))";
-  wrap.style.gridTemplateRows = "repeat(" + S.rows + ",var(--cell-h))";
+  wrap.style.maxWidth = (S.cols * 68 + (S.cols - 1) * 8 + 32) + "px";
   wrap.innerHTML = "";
   const reveal = !S.alive || S.won;
   for (let r = S.rows - 1; r >= 0; r--) {

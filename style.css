@@ -219,13 +219,16 @@ input[type="number"]:focus {
 }
 
 #world {
-  display: grid;
+  display: flex;
+  flex-wrap: wrap;
   gap: 8px;
   padding: 16px;
   justify-content: center;
-  align-content: center;
+  align-items: flex-start;
+  align-content: flex-start;
   overflow: auto;
   flex: 1;
+  margin: 0 auto;
 }
 
 .cell {
