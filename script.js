@@ -271,6 +271,7 @@ function tick() {
     return;
   }
   pushLog("No safe move \u2014 stuck", "l-dead");
+  setBar("No safe move \u2014 stuck", "s-dead");
   haltRunner();
   draw();
 }
@@ -357,6 +358,8 @@ function draw() {
         isMe = S.ar === r && S.ac === c;
       const vis = S.visited.has(k),
         safe = S.provenSafe.has(k);
+      const showGold = S.won && S.gold[r][c];
+      const deadHere = !S.alive && isMe;
       const bP = S.suspectPit.has(k),
         bW = S.suspectWmp.has(k);
       if (reveal && S.pits[r][c]) el.classList.add("c-pit");
@@ -364,23 +367,50 @@ function draw() {
       else if (vis) el.classList.add("c-vis");
       else if (safe) el.classList.add("c-safe");
       else el.classList.add("c-unk");
-      if (isMe) el.classList.add("c-agent");
+      if (deadHere) el.classList.add("c-fatal");
+      if (showGold) el.classList.add("c-gold-found");
+      if (isMe && !deadHere) el.classList.add("c-agent");
       const coord = document.createElement("div");
       coord.className = "c-coord";
       coord.textContent = r + 1 + "," + (c + 1);
       el.appendChild(coord);
-      const icon = document.createElement("i");
-      icon.className = "c-icon";
-      if (isMe) {
-        icon.className += S.alive ? " bi bi-robot" : " bi bi-skull";
+      let icon = null;
+      if (deadHere && S.pits[r][c]) {
+        icon = document.createElement("i");
+        icon.className = "c-icon bi bi-patch-minus-fill";
+      } else if (deadHere && S.wumpus[r][c]) {
+        icon = document.createElement("i");
+        icon.className = "c-icon bi bi-bug-fill";
+      } else if (isMe) {
+        icon = document.createElement("img");
+        icon.className = "c-icon c-agent-img";
+        icon.src = "agent.png";
+        icon.alt = "Agent";
       } else if (reveal && S.pits[r][c]) {
-        icon.className += " bi bi-patch-minus-fill";
+        icon = document.createElement("i");
+        icon.className = "c-icon bi bi-patch-minus-fill";
       } else if (reveal && S.wumpus[r][c]) {
-        icon.className += " bi bi-bug-fill";
-      } else if (vis && S.gold[r][c] && S.won) {
-        icon.className += " bi bi-gem";
+        icon = document.createElement("i");
+        icon.className = "c-icon bi bi-bug-fill";
+      } else if (showGold) {
+        icon = document.createElement("i");
+        icon.className = "c-icon bi bi-gem";
       }
-      el.appendChild(icon);
+      if (icon) {
+        el.appendChild(icon);
+      }
+      if (deadHere) {
+        const mark = document.createElement("div");
+        mark.className = "c-death-mark";
+        mark.textContent = "X";
+        el.appendChild(mark);
+      }
+      if (showGold) {
+        const gold = document.createElement("div");
+        gold.className = "c-gold-token";
+        gold.innerHTML = '<i class="bi bi-gem"></i>';
+        el.appendChild(gold);
+      }
       if (!vis && !isMe) {
         const inf = document.createElement("div");
         inf.className = "c-inf";

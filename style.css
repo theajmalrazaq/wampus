@@ -241,37 +241,50 @@ input[type="number"]:focus {
   justify-content: center;
   position: relative;
   transition: 0.2s;
-  border: 1px solid transparent;
+  border: 0;
 }
 
 .c-unk {
   background: #141827;
-  border-color: #ffffff10;
 }
 
 .c-vis {
   background: #1e2a44;
-  border-color: #ffffff1f;
 }
 
 .c-safe {
   background: rgba(52, 211, 153, 0.18);
-  border-color: rgba(52, 211, 153, 0.55);
 }
 
 .c-pit {
   background: rgba(251, 113, 133, 0.2);
-  border-color: rgba(251, 113, 133, 0.5);
 }
 
 .c-wmp {
   background: rgba(251, 191, 36, 0.2);
-  border-color: rgba(251, 191, 36, 0.48);
 }
 
 .c-agent {
   background: #7c5df9 !important;
-  border-color: #9b82fc !important;
+}
+
+.c-gold-found {
+  background:
+    radial-gradient(circle at top, rgba(255, 244, 180, 0.3), transparent 58%),
+    linear-gradient(180deg, rgba(251, 191, 36, 0.34), rgba(217, 119, 6, 0.26));
+  box-shadow: inset 0 0 0 1px rgba(255, 244, 180, 0.2);
+}
+
+.c-fatal {
+  box-shadow:
+    inset 0 0 0 2px rgba(255, 255, 255, 0.18),
+    0 0 0 2px rgba(251, 113, 133, 0.55);
+}
+
+.c-agent.c-gold-found {
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 244, 180, 0.2),
+    0 0 0 2px rgba(251, 191, 36, 0.28);
 }
 
 .c-coord {
@@ -285,6 +298,52 @@ input[type="number"]:focus {
 
 .c-icon {
   font-size: 22px;
+}
+
+.c-agent-img {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+}
+
+.legend-agent-img {
+  width: 12px;
+  height: 12px;
+  object-fit: contain;
+}
+
+.c-gold-token {
+  position: absolute;
+  right: 6px;
+  bottom: 5px;
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(17, 24, 39, 0.75);
+  color: #fbbf24;
+  font-size: 10px;
+  box-shadow: 0 0 0 1px rgba(251, 191, 36, 0.35);
+}
+
+.c-death-mark {
+  position: absolute;
+  right: 6px;
+  top: 5px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fb7185;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 900;
+  box-shadow: 0 0 0 2px rgba(20, 24, 39, 0.8);
 }
 
 .c-inf {
