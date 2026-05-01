@@ -3,7 +3,7 @@
 A high-fidelity, interactive simulation of the classic **Wumpus World** artificial intelligence environment. The agent uses propositional logic and a resolution refutation inference engine to navigate the grid, avoid hazards, and retrieve the gold.
 
 
-## 🚀 Features
+## Features
 
 - **Dynamic Inference Engine**: The agent maintains a Knowledge Base (KB) of clauses and uses logical deduction to prove cells are "Safe" or "Dangerous".
 - **Real-Time Dashboard**:
@@ -14,7 +14,7 @@ A high-fidelity, interactive simulation of the classic **Wumpus World** artifici
 - **Customizable Environment**: Adjust grid dimensions (up to 8x8) and simulation speed via the settings modal.
 - **Modern Aesthetics**: Built with Tailwind CSS, Lucide Icons, and custom Google Fonts (Google Sans Flex & Press Start 2P) for a premium "Modern-Retro" feel.
 
-## 🧠 How it Works
+## How it Works
 
 ### 1. Percepts & Knowledge
 Every time the agent visits a cell, it receives percepts:
@@ -38,14 +38,14 @@ The agent prioritizes:
 2. **Navigation**: BFS pathfinding to reach distant safe cells.
 3. **Brave Moves**: If no safe moves exist, it calculates the "least risky" unknown cell based on its current KB.
 
-## 🛠️ Technology Stack
+## Technology Stack
 
 - **Frontend**: HTML5, Vanilla JavaScript
 - **Styling**: Vanilla CSS with direct color values (no variables or media queries)
 - **Icons**: Lucide Icons
 - **Typography**: Google Sans Flex (UI), Press Start 2P (Retro Accents)
 
-## 📖 Usage
+## Usage
 
 1. Open `wampus.html` in any modern web browser.
 2. Click **New Episode** to generate a random world.
